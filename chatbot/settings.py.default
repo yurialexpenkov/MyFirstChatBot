@@ -1,0 +1,105 @@
+GROUP_ID = 200948135
+TOKEN = '
+
+DATABASE = [
+    {
+        "name": "помощь",
+        "tokens": ("/help",),
+        "scenario": None,
+        "answer": "могу подбрать авиа билеты из городов: Санкт-Петербург, Мюнхен, ' \
+                 'Пхукет, Сайгон, Бали, для этого введите: /ticket"
+    },
+    {
+        "name": "регистрация",
+        "tokens": ("/ticket",),
+        "scenario": "registration",
+        "answer": None,
+    },
+]
+
+SCENARIOS = {
+    "registration": {
+        "first_step": "step1",
+        "steps": {
+            "step1": {
+                "text": "Чтобы начать регистрацию введитете город отправления",
+                "failure_text": "Данного города нет в списке",
+                "handler": "handler_sity_of_departyre",
+                "next_step": "step2"
+            },
+            "step2": {
+                "text": " Вы вели город отправления - {sity_of_departyre} .Введите город прибытия",
+                "failure_text": "Данного города нет в списке городов прибытия",
+                "handler": "handler_sity_of_arrival",
+                "next_step": "step3"
+            },
+            "step3": {
+                "text": "Введите желаемую дату вылета в формате xx-xx-xxxx",
+                "failure_text": 'Вы ввлели некоректно дату',
+                "handler": 'handler_selection_of_tickets_on_a_given_date',
+                "next_step": "step4"
+            },
+            "step4": {
+                "text": "Варианты вылета: \n {list_aircraft_flight} \n выберите 1 вариант",
+                "failure_text": "Данного варианта нет в списке",
+                "handler": "departure_date_selection",
+                "next_step": "step5"
+            },
+            "step5": {
+                "text": "Вы выбрали вариант вылета: {selected_flight_date}, Выберите количество мест ( от1 до 5)",
+                "failure_text": "Данного варианта нет в списке",
+                "handler": "choice_of_number_of_seats",
+                "next_step": "step6"
+            },
+            "step6": {
+                "text": "Предлагаем написать комментарий в произвольной форме",
+                "failure_text": "-",
+                "handler": "comment_entry",
+                "next_step": "step7"
+            },
+            "step7": {
+                "text": "Уточняем введенные данные: \n город отправления :{sity_of_departyre} \n "
+                        "город прибытия: {sity_of_arrival} \n дата вылета: {selected_flight_date} \n "
+                        "введенный комментарий: {comment_entry} \n. Введите да или нет",
+                "failure_text": "Вы не ввели да или нет",
+                "handler": "clarification_of_entered_data",
+                "next_step": "step8"
+            },
+            "step8": {
+                "text": "Введите Ваше имя",
+                "failure_text": "Вы ввели некоректное имя",
+                "handler": "handler_name",
+                "next_step": "step9"
+            },
+            "step9": {
+                "text": "Введите фамилию",
+                "failure_text": "Вы ввели некоректную фамилию",
+                "handler": "handler_surname",
+                "next_step": "step10"
+            },
+            "step10": {
+                "text": "Вот Ваш билет на самолет:",
+                "image": "generate_ticket_handler",
+                "failure_text": None,
+                "handler": "generate_ticket_handler",
+                "next_step": None
+            }
+        },
+    }
+}
+
+
+DEFAULT_ANSWER = 'Здравствуйте. Введите: /ticket  - для начало заказа билетов или /help - для пояснения работы бота'
+
+print(type(DATABASE[0]['tokens']))
+# text_to_send = DATABASE[0]['answer']
+# print(text_to_send)
+# SCENARIOS[state.scenario_name]['steps'].keys()
+
+DB_CONFIG = dict(
+    provider='postgres',
+    user='postgres',
+    password='',
+    host='localhost',
+    database='vk_chat_bot'
+    )
